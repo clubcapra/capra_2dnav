@@ -1,0 +1,66 @@
+<launch>
+
+  <node pkg="sensor_node_pkg" type="sensor_node_type" name="sensor_node_name" output="screen">
+    <param name="sensor_param" value="param_value" />
+  </node>
+
+<!-- LIDAR -->
+
+<node name="sick_tim551_2050001" pkg="sick_tim" type="sick_tim551_2050001" respawn="false" output="screen">
+      <param name="hostname" type="string" value="192.168.0.155" />
+      <param name="port" type="string" value="2112" />
+      <param name="timelimit" type="int" value="5" />
+  </node>
+
+
+  <!-- OR 
+    <include file="$(find takin_bringup)/launch/sick_tim.launch" >
+    </include>
+  -->
+
+
+<!-- IMU -->
+
+  <node pkg="vectornav" type="vnpub" name="vectornav"  output="screen" >
+
+	<param name="serial_port" type="string" value="/dev/ttyUSB0" />
+	<param name="serial_baud" type="int"    value="115200" />
+	<param name="async_output_rate" type="int"    value="40" />      
+	<param name="frame_id" type="string" value="base_link" />
+	
+  </node>
+
+  <!-- OR 
+    <include file="$(find takin_bringup)/launch/imu.launch" >
+    </include>
+  -->
+    
+
+
+
+<!-- CAMERA 3D -->
+
+    <include file="$(find astra_launch)/launch/astra.launch" >
+        <arg name="camera" value="camera_3d" />
+        <arg name="publish_tf" value="false" />
+    </include>
+
+
+  <!-- OR 
+    <include file="$(find takin_bringup)/launch/camera_3d.launch" >
+    </include>
+  -->
+
+
+
+<!-- ENCODER -->
+
+ <node pkg="odom_node_pkg" type="odom_node_type" name="odom_node" output="screen">
+    <param name="odom_param" value="param_value" />
+ </node>
+
+ <node pkg="transform_configuration_pkg" type="transform_configuration_type" name="transform_configuration_name" output="screen">
+    <param name="transform_configuration_param" value="param_value" />
+ </node>
+
+</launch> 
